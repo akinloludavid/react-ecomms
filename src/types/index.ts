@@ -3,16 +3,21 @@
  * @type
  */
 export type AppRoute = {
-  path: string
-  element: React.ReactNode
-}
+  path: string;
+  element: React.ReactNode;
+};
 
 export interface IGetAllProducts {
-  category: string
-  description: string
-  id: number
-  image: string
-  price: number
-  rating: { rate: number; count: number }
-  title: string
+  category: string;
+  description: string;
+  id: number;
+  image: string;
+  price: number;
+  rating: { rate: number; count: number };
+  title: string;
+}
+
+export interface IOptions {
+  label: string;
+  value: string;
 }

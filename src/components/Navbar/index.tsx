@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <Flex
@@ -8,7 +9,7 @@ const Navbar = () => {
       align="center"
       width={"100vw"}
       height="60px"
-      px={20}
+      px={10}
       backgroundColor="cyan.600"
     >
       <Box>
@@ -18,7 +19,8 @@ const Navbar = () => {
           </Text>
         </Link>
       </Box>
-      <Box display={"flex"} gap={24}>
+
+      <Box display={"flex"} gap={4}>
         <Link to="/cart">
           <Text>Cart</Text>
         </Link>

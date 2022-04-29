@@ -3,8 +3,8 @@ import { useQuery, useQueryClient } from "react-query";
 import { getAllProducts, getSingleProduct } from "../../services/api/products";
 import { IGetAllProducts } from "../../types";
 
-export const useGetAllProducts = (options = {}) => {
-  const res = useQuery(ALL_PRODUCTS, getAllProducts, options);
+export const useGetAllProducts = (category: string, options = {}) => {
+  const res = useQuery([ALL_PRODUCTS, category], getAllProducts, options);
   return res;
 };
 

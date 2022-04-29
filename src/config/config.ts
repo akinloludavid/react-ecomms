@@ -1,2 +1,1 @@
-
-export const baseUrl = "https://fakestoreapi.com";
+export const baseUrl = import.meta.env.VITE_BASE_URL;

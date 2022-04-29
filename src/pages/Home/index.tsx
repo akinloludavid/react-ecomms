@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@chakra-ui/react";
+import { Box, Grid, Text } from "@chakra-ui/react";
 import CardComp from "../../components/Card";
 import { useGetAllProducts } from "../../services/query/products";
 import { IGetAllProducts } from "../../types";
@@ -7,15 +7,33 @@ import { Link } from "react-router-dom";
 import LoadingCards, {
   HomePageCardLoaders,
 } from "../../components/Loaders/LoadingCards";
+import FilterSection from "../../components/filter-section";
+import { useStore } from "../../zust/store";
 
+const getFilteredProducts = (arr: any[], query: string) => {
+  return arr?.filter((row: any) => {
+    return Object.values(row).some((el) =>
+      String(el).toLowerCase().includes(query)
+    );
+  });
+};
 const Home = () => {
-  const { data: productsData, isLoading } = useGetAllProducts();
+  const category = useStore((state) => state.category);
+  const searchTerm = useStore((state) => state.searchTerm);
 
+  const { data: productsData, isLoading } = useGetAllProducts(category);
   if (isLoading) {
     return <HomePageCardLoaders />;
   }
+
+  const allProducts = getFilteredProducts(productsData, searchTerm);
   return (
-    <div>
+    <Box>
+      <FilterSection />
+
+      <Text mt={6} ml={4} fontWeight={"semibold"} fontSize="24px">
+        All Products
+      </Text>
       <Grid
         justifyContent={"center"}
         templateColumns={[
@@ -27,7 +45,7 @@ const Home = () => {
         gap={6}
         p={4}
       >
-        {productsData?.map((product: IGetAllProducts) => (
+        {allProducts?.map((product: IGetAllProducts) => (
           <Link key={product.id} to={`/product/${product.id}`}>
             <CardComp
               productName={product.title}
@@ -37,8 +55,7 @@ const Home = () => {
           </Link>
         ))}
       </Grid>
-      home
-    </div>
+    </Box>
   );
 };
 
