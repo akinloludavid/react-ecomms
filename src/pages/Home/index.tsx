@@ -8,7 +8,7 @@ import LoadingCards, {
   HomePageCardLoaders,
 } from "../../components/Loaders/LoadingCards";
 import FilterSection from "../../components/filter-section";
-import { useStore } from "../../zust/store";
+import { useCartStore, useStore } from "../../zust/store";
 
 const getFilteredProducts = (arr: any[], query: string) => {
   return arr?.filter((row: any) => {
@@ -22,11 +22,11 @@ const Home = () => {
   const searchTerm = useStore((state) => state.searchTerm);
 
   const { data: productsData, isLoading } = useGetAllProducts(category);
-  if (isLoading) {
-    return <HomePageCardLoaders />;
-  }
 
-  const allProducts = getFilteredProducts(productsData, searchTerm);
+  const allProducts: IGetAllProducts[] = getFilteredProducts(
+    productsData,
+    searchTerm
+  );
   return (
     <Box>
       <FilterSection />
@@ -34,6 +34,7 @@ const Home = () => {
       <Text mt={6} ml={4} fontWeight={"semibold"} fontSize="24px">
         All Products
       </Text>
+      {isLoading && <HomePageCardLoaders />}
       <Grid
         justifyContent={"center"}
         templateColumns={[
@@ -47,11 +48,7 @@ const Home = () => {
       >
         {allProducts?.map((product: IGetAllProducts) => (
           <Link key={product.id} to={`/product/${product.id}`}>
-            <CardComp
-              productName={product.title}
-              productPrice={product.price}
-              productImage={product.image}
-            />
+            <CardComp product={product} />
           </Link>
         ))}
       </Grid>

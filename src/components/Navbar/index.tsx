@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useCartStore } from "../../zust/store";
 
 const Navbar = () => {
+  const cart = useCartStore((state) => state.cart);
   return (
     <Flex
       justify={"space-between"}
@@ -20,14 +22,31 @@ const Navbar = () => {
         </Link>
       </Box>
 
-      <Box display={"flex"} gap={4}>
+      <Flex align={"center"} display={"flex"} gap={4}>
         <Link to="/cart">
-          <Text>Cart</Text>
+          {cart.length > 0 && (
+            <Box display={"flex"} position={"relative"} p={3}>
+              <Text>Cart</Text>
+              <Box
+                width={"16px"}
+                height="16px"
+                right={1}
+                top={1}
+                bgColor={"#fff"}
+                borderRadius="50%"
+                position={"absolute"}
+              >
+                <Text fontSize={"xs"} textAlign="center">
+                  {cart.length}
+                </Text>
+              </Box>
+            </Box>
+          )}
         </Link>
         <Link to="/signin">
           <Text>Login / Signup</Text>
         </Link>
-      </Box>
+      </Flex>
     </Flex>
   );
 };

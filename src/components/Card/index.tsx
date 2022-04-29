@@ -2,17 +2,16 @@ import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
 import { convertPriceToNaira, trimString } from "../../utils/helper";
+import { useCartStore } from "../../zust/store";
+import { IGetAllProducts } from "../../types";
+import AddToCartButton from "../AddToCart/Button";
 
-interface CardProps {
-  productName: string;
-  productPrice: string | number;
-  productImage: string;
-}
+const CardComp = ({ product }: any) => {
+  const addToCart = useCartStore((state) => state.addToCart);
 
-const CardComp = ({ productName, productPrice, productImage }: CardProps) => {
-  const addToCart = (e: any) => {
+  const handleAddProductToCart = (e: any, product: IGetAllProducts) => {
     e.preventDefault();
-    console.log("hi");
+    addToCart(product);
   };
   return (
     <Box
@@ -29,22 +28,15 @@ const CardComp = ({ productName, productPrice, productImage }: CardProps) => {
             //  objectFit="contain"
             width={"100"}
             height="300"
-            src={productImage}
+            src={product.image}
           />
         </Box>
         <Flex justify={"space-between"} p={2}>
-          <Text>{trimString(productName)}</Text>
-          <Text fontWeight={600}>{convertPriceToNaira(productPrice)}</Text>
+          <Text>{trimString(product.title)}</Text>
+          <Text fontWeight={600}>{convertPriceToNaira(product.price)}</Text>
         </Flex>
         <Box p={2} display="flex" flexDirection={"column"} mt="auto">
-          <Button
-            onClick={(e) => addToCart(e)}
-            mt="auto"
-            width={"100%"}
-            leftIcon={<FaShoppingCart />}
-          >
-            Add To Cart
-          </Button>
+          <AddToCartButton product={product} />
         </Box>
       </Flex>
     </Box>

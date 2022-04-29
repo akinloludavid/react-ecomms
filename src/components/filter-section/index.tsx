@@ -45,7 +45,7 @@ const FilterSection = () => {
       gap={10}
     >
       <Text>Filter By: </Text>
-      <Box width={"200px"}>
+      <Box width={"20%"}>
         <CustomSelect
           onChange={handleCategoryChange}
           placeholder="Select category"
@@ -53,7 +53,7 @@ const FilterSection = () => {
           options={categoryOptions}
         />
       </Box>
-      <Box>
+      <Box width={"20%"}>
         <InputGroup>
           <Input
             value={searchTerm}
