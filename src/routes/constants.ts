@@ -5,6 +5,7 @@ export const PUBLIC_PATHS = {
   CART: "/cart",
   LOGIN: "/signin",
   SIGNUP: "/signup",
+  CHECKOUT: "/checkout",
 };
 
 export const PRIVATE_PATHS = {

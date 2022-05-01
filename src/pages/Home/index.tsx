@@ -9,6 +9,7 @@ import LoadingCards, {
 } from "../../components/Loaders/LoadingCards";
 import FilterSection from "../../components/filter-section";
 import { useCartStore, useStore } from "../../zust/store";
+import useCustomToast from "../../utils/notifications";
 
 const getFilteredProducts = (arr: any[], query: string) => {
   return arr?.filter((row: any) => {
@@ -21,8 +22,12 @@ const Home = () => {
   const category = useStore((state) => state.category);
   const searchTerm = useStore((state) => state.searchTerm);
 
-  const { data: productsData, isLoading } = useGetAllProducts(category);
-
+  const { errorToast } = useCustomToast();
+  const { data: productsData, isLoading }: any = useGetAllProducts(category, {
+    onError: (err: any) => {
+      errorToast(err?.message);
+    },
+  });
   const allProducts: IGetAllProducts[] = getFilteredProducts(
     productsData,
     searchTerm
@@ -36,7 +41,7 @@ const Home = () => {
       </Text>
       {isLoading && <HomePageCardLoaders />}
       <Grid
-        justifyContent={"center"}
+        justifyContent={["center"]}
         templateColumns={[
           "repeat(1, 1fr)",
           "repeat(2, 1fr)",

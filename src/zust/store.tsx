@@ -1,6 +1,6 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
-import { IGetAllProducts } from "../types";
+import { IGetAllProducts, IProductInCart } from "../types";
 
 export const useStore = create((set: Function) => ({
   category: "",
@@ -18,18 +18,76 @@ export const useCartStore = create(
   persist(
     (set: Function, get: Function) => ({
       cart: [],
+      totalAmt: 0,
+      getTotalAmount: () => {
+        set({
+          totalAmt: get().cart.reduce(
+            (acc: any, curr: any) => acc.totalPrice + curr.totalPrice,
+            0
+          ),
+        });
+      },
       addToCart: (product: IGetAllProducts) =>
-        set({ cart: [...get().cart, product] }),
-      removeFromCart: (product: IGetAllProducts) =>
+        set({
+          cart: [
+            ...get().cart,
+            { ...product, quantity: 1, totalPrice: product.price },
+          ],
+        }),
+      removeFromCart: (product: IProductInCart) =>
         set({
           cart: get().cart.filter(
             (item: IGetAllProducts) => item.id !== product.id
           ),
         }),
+
+      increaseProductQty: (product: IProductInCart) => {
+        const updatedProducts = get().cart.map((item: any) => {
+          if (item.id === product.id) {
+            return {
+              ...product,
+              quantity: product.quantity + 1,
+              totalPrice: Number(product.price) * (product.quantity + 1),
+            };
+          } else {
+            return item;
+          }
+        });
+        set({
+          cart: updatedProducts,
+        });
+      },
+      reduceProductQuantity: (product: IProductInCart) => {
+        const updatedProducts = get().cart.map((item: any) => {
+          if (item.id === product.id) {
+            return {
+              ...product,
+              quantity: Math.max(1, product.quantity - 1),
+              totalPrice: Number(product.price) * (product.quantity - 1),
+            };
+          } else {
+            return item;
+          }
+        });
+        set({
+          cart: updatedProducts,
+        });
+      },
       emptyCart: () => set({ cart: [] }),
     }),
     {
       name: "cart-items", // unique name
+    }
+  )
+);
+
+export const useUserStore = create(
+  persist(
+    (set, get) => ({
+      user: undefined,
+    }),
+    {
+      name: "user-info", // unique name
     }
   )
 );

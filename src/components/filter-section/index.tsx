@@ -4,6 +4,7 @@ import {
   Flex,
   Input,
   InputGroup,
+  InputLeftElement,
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
@@ -16,6 +17,7 @@ import {
   useStore,
 } from "../../zust/store";
 import { MdSearch } from "react-icons/md";
+import { FaTimes } from "react-icons/fa";
 
 const FilterSection = () => {
   const selectCategory = useStore(categorySelector);
@@ -40,12 +42,14 @@ const FilterSection = () => {
       justifyContent={"center"}
       alignItems="center"
       width={"100%"}
-      height="60px"
+      // height="60px"
       bgColor={"gray.200"}
-      gap={10}
+      py={2}
+      gap={[2, 10]}
+      flexDirection={["column", "row"]}
     >
       <Text>Filter By: </Text>
-      <Box width={"20%"}>
+      <Box width={["75%", "20%"]}>
         <CustomSelect
           onChange={handleCategoryChange}
           placeholder="Select category"
@@ -53,17 +57,28 @@ const FilterSection = () => {
           options={categoryOptions}
         />
       </Box>
-      <Box width={"20%"}>
+      <Box width={["75%", "20%"]}>
         <InputGroup>
+          <InputLeftElement children={<MdSearch />} />
           <Input
+            variant={"primary"}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             bgColor={"white"}
-            outline="none"
             borderColor={"white"}
             placeholder="Search for product"
           />
-          <InputRightElement children={<MdSearch />} />
+          {searchTerm && (
+            <InputRightElement
+              children={
+                <FaTimes
+                  onClick={() => setSearchTerm("")}
+                  cursor={"pointer"}
+                  color="rgba(0,0,0,0.4)"
+                />
+              }
+            />
+          )}
         </InputGroup>
       </Box>
     </Flex>

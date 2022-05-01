@@ -18,7 +18,7 @@ const Pages = () => {
         refetchOnReconnect: true,
         refetchOnWindowFocus: false,
         refetchInterval: 600_000,
-        retry: 2,
+        retry: 0,
       },
     },
   });

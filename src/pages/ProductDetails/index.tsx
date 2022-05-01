@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { useGetProductById } from "../../services/query/products";
 import { FaShoppingCart } from "react-icons/fa";
 import { convertPriceToNaira } from "../../utils/helper";
+import AddToCartButton from "../../components/AddToCart/Button";
 const ProductDetails = () => {
   const { productId = "" } = useParams();
 
@@ -13,7 +14,6 @@ const ProductDetails = () => {
   if (isLoading) {
     return <h2>loadding</h2>;
   }
-  console.log(product);
   return (
     <Box p={"40px"}>
       <Link to="/">
@@ -51,16 +51,16 @@ const ProductDetails = () => {
             </Box>{" "}
             {product.description}
           </Text>
-          <Box shadow={"md"} mt={6}>
+          <Box shadow={"md"} p={2} mt={6}>
             <Text fontSize="lg" fontWeight={"600"}>
               <Box as={"span"} fontWeight="bold">
                 Price:
               </Box>{" "}
               {convertPriceToNaira(product.price)}
             </Text>
-            <Button mt="12" width={"100%"} leftIcon={<FaShoppingCart />}>
-              Add To Cart
-            </Button>
+            <Box mt="6" display="flex" flexDirection={"column"}>
+              <AddToCartButton product={product} />
+            </Box>
           </Box>
         </Box>
       </Flex>

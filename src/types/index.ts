@@ -17,6 +17,9 @@ export interface IGetAllProducts {
   title: string;
 }
 
+export interface IProductInCart extends IGetAllProducts {
+  quantity: number;
+}
 export interface IOptions {
   label: string;
   value: string;

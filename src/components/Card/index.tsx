@@ -1,18 +1,9 @@
 import React from "react";
-import { FaShoppingCart } from "react-icons/fa";
-import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
+import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import { convertPriceToNaira, trimString } from "../../utils/helper";
-import { useCartStore } from "../../zust/store";
-import { IGetAllProducts } from "../../types";
 import AddToCartButton from "../AddToCart/Button";
 
 const CardComp = ({ product }: any) => {
-  const addToCart = useCartStore((state) => state.addToCart);
-
-  const handleAddProductToCart = (e: any, product: IGetAllProducts) => {
-    e.preventDefault();
-    addToCart(product);
-  };
   return (
     <Box
       width={"100%"}
