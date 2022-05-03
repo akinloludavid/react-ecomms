@@ -18,13 +18,14 @@ export const useCartStore = create(
   persist(
     (set: Function, get: Function) => ({
       cart: [],
-      totalAmt: 0,
+      totalAmt: get(),
+      // .cart.map((pr: any) => pr.totalPrice)
+      // .reduce((acc: any, curr: any) => acc + curr, 0),
       getTotalAmount: () => {
         set({
-          totalAmt: get().cart.reduce(
-            (acc: any, curr: any) => acc.totalPrice + curr.totalPrice,
-            0
-          ),
+          totalAmt: get()
+            .cart.map((pr: any) => pr.totalPrice)
+            .reduce((acc: any, curr: any) => acc + curr, 0),
         });
       },
       addToCart: (product: IGetAllProducts) =>
@@ -85,6 +86,11 @@ export const useUserStore = create(
   persist(
     (set, get) => ({
       user: undefined,
+
+      saveUserDetails: (userInfo: any) =>
+        set({
+          user: userInfo,
+        }),
     }),
     {
       name: "user-info", // unique name

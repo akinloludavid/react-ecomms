@@ -16,12 +16,12 @@ const AddToCartButton = ({ product, handleClick }: any) => {
   const handleAddProductToCart = (e: SyntheticEvent) => {
     e.preventDefault();
     addToCart(product);
-    successToast("Product Added to Cart");
+    successToast("Product Added to Cart", "bottom-right");
   };
   const handleRemoveProductFromCart = (e: SyntheticEvent) => {
     e.preventDefault();
     removeFromCart(product);
-    successToast("Product removed successfully");
+    successToast("Product removed successfully", "bottom-right");
   };
   return isProductInCart ? (
     <Button

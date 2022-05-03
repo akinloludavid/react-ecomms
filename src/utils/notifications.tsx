@@ -1,22 +1,28 @@
-import { useToast } from "@chakra-ui/react";
+import { ToastPositionWithLogical, useToast } from "@chakra-ui/react";
 const useCustomToast = () => {
   const toast = useToast();
 
-  const successToast = (successMsg: string = "Operation successful") => {
+  const successToast = (
+    successMsg: string = "Operation successful",
+    pos: ToastPositionWithLogical = "top-right"
+  ) => {
     return toast({
       status: "success",
       title: "Success",
       description: successMsg,
-      position: "bottom-right",
+      position: pos,
       isClosable: true,
     });
   };
-  const errorToast = (errorMessage: string = "Error occurred") => {
+  const errorToast = (
+    errorMessage: string = "Error occurred",
+    pos: ToastPositionWithLogical = "top-right"
+  ) => {
     return toast({
       status: "error",
       title: "Error",
       description: errorMessage,
-      position: "bottom-right",
+      position: pos,
       isClosable: true,
     });
   };

@@ -24,3 +24,7 @@ export interface IOptions {
   label: string;
   value: string;
 }
+export interface IUserLoginDetails {
+  username: string;
+  password: string;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -8,12 +8,14 @@ import {
   GridItem,
   Image,
   Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { MdDelete, MdOutlineArrowBack } from "react-icons/md";
 import { useCartStore } from "../../zust/store";
-import { convertPriceToNaira } from "../../utils/helper";
+import { convertPriceToNaira, trimString } from "../../utils/helper";
 import { useNavigate } from "react-router-dom";
 const CartPage = () => {
+  const [isMobile] = useMediaQuery("(max-width: 375px)");
   const navigate = useNavigate();
   const { cart, increaseProductQty, reduceProductQuantity, removeFromCart } =
     useCartStore((state) => state);
@@ -34,8 +36,9 @@ const CartPage = () => {
   };
 
   const cartLength = cart.length;
+  console.log(cartLength);
   return (
-    <Box p={[2, 20]}>
+    <Box p={[2, 10, 10, 20]}>
       <Flex align={"center"} gap={2}>
         <Box
           display="flex"
@@ -51,12 +54,7 @@ const CartPage = () => {
 
       <Box mt={4}>
         <Text fontSize={24} fontWeight={"semibold"}>
-          Shopping Cart:
-          {cartLength > 0
-            ? cartLength > 1
-            : `${cartLength} items`
-            ? `${cartLength} item`
-            : null}
+          Shopping Cart: ({cartLength})
         </Text>
       </Box>
 
@@ -70,32 +68,40 @@ const CartPage = () => {
             p={[4]}
             mb={6}
           >
-            <GridItem colSpan={[12, 2]}>
+            <GridItem colSpan={[4, 4, 2, 1]}>
               <Box>
-                <Text color={"gray.600"}>Product Image</Text>
-                <Box width={["100%", "80%"]} borderRadius={"4px"}>
-                  <Image src={prod.image} />
+                <Box width={["100%", "100%"]} borderRadius={"4px"}>
+                  <Image width={"100%"} src={prod.image} />
                 </Box>
               </Box>
             </GridItem>
-            <GridItem colSpan={[12, 6]}>
-              <Box width={"100%"} p={2}>
+            <GridItem colSpan={[8, 8, 10, 6]}>
+              <Box width={"100%"} fontSize={["12px", "14px"]}>
                 <Text as="h1" fontWeight={600} fontSize={"18px"}>
                   Product Details
                 </Text>
                 <Text>Category: {prod.category}</Text>
 
                 <Text>{prod.title}</Text>
-                <Text>{prod.description}</Text>
+                <Text>{trimString(prod.description, 90)}</Text>
+                {isMobile && (
+                  <Text fontWeight={"bold"} color={"#030303"}>
+                    {convertPriceToNaira(prod.price)}
+                  </Text>
+                )}
               </Box>
             </GridItem>
-            <GridItem colSpan={[6, 1]}>
-              <Box>
-                <Text color={"gray.600"}>Unit Price</Text>
-                {convertPriceToNaira(prod.price)}
-              </Box>
-            </GridItem>
-            <GridItem colSpan={[6, 2]}>
+            {!isMobile && (
+              <GridItem colSpan={[6, 4, 4, 1]}>
+                <Box>
+                  <Text color={"gray.600"}>Unit Price</Text>
+                  <Text fontWeight={"bold"} color={"#030303"}>
+                    {convertPriceToNaira(prod.price)}
+                  </Text>
+                </Box>
+              </GridItem>
+            )}
+            <GridItem colSpan={[6, 4, 4, 2]}>
               <Flex direction={"column"} height="100%">
                 <Text color={"gray.600"} mb={2}>
                   Actions
@@ -120,13 +126,14 @@ const CartPage = () => {
                 <Button
                   mt="auto"
                   mb={2}
+                  variant="outline"
                   onClick={() => handleProductDeleteFromCart(prod)}
                 >
                   <MdDelete /> Remove{" "}
                 </Button>
               </Flex>
             </GridItem>
-            <GridItem colSpan={[12, 1]}>
+            <GridItem colSpan={[6, 4, 4, 1]}>
               <Box>
                 <Text color={"gray.600"}>Sub total</Text>
                 <Text fontWeight={"semibold"}>
@@ -143,15 +150,31 @@ const CartPage = () => {
       )}
 
       <Flex flexDirection="column" align={"center"} justify={"center"}>
-        <Button variant={"unstyled"} fontSize="12px" color={"gray.600"}>
+        <Button
+          onClick={() => navigate("/")}
+          variant={"unstyled"}
+          fontSize="12px"
+          color={"gray.600"}
+        >
           Continue Shopping to Add Items
         </Button>
         <Flex justify={"space-between"} w="100%">
           <Text color={"gray.600"}>Total Price: </Text>
-          <Text>{convertPriceToNaira(totalAmount)}</Text>
+          <Text fontWeight={"semibold"}>
+            {convertPriceToNaira(totalAmount)}
+          </Text>
         </Flex>
-        <Button mt={4} width={"100%"} onClick={() => navigate("/checkout")}>
-          CHECKOUT{" "}
+        <Button
+          display={"flex"}
+          gap={2}
+          mt={4}
+          width={"100%"}
+          onClick={() => navigate("/checkout")}
+        >
+          <Text>CHECKOUT</Text>
+          <Text fontWeight={"semibold"}>
+            {convertPriceToNaira(totalAmount)}
+          </Text>
         </Button>
       </Flex>
     </Box>
