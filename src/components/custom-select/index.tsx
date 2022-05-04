@@ -1,3 +1,4 @@
+import { CircularProgress } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import React from "react";
 import Select from "react-select";
@@ -19,9 +20,30 @@ const CustomSelect = ({
   value,
   ...props
 }: ICustomSelect) => {
+  const customStyles = {
+    option: (provided: any, state: any) => ({
+      ...provided,
+      borderBottom: "1px dotted skyblue",
+      color: state.isSelected ? "#000" : "#030303",
+      padding: 10,
+      cursor: "pointer",
+      backgroundColor: state.isSelected ? "skyblue" : "#f3f3f3",
+    }),
+
+    singleValue: (provided: any, state: any) => {
+      const opacity = state.isDisabled ? 0.5 : 1;
+      const transition = "opacity 300ms";
+
+      return { ...provided, opacity, transition };
+    },
+    indicatorSeparator: () => ({
+      display: "none",
+    }),
+  };
   return (
     <CustomSelect.Wrapper>
       <Select
+        styles={customStyles}
         options={options}
         onChange={onChange}
         placeholder={placeholder}

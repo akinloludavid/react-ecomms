@@ -9,3 +9,8 @@ export const userLogin = async (userDetails: IUserLoginDetails) => {
 
   return res.data;
 };
+
+export const userSignUp = async (userDetails: any) => {
+  const res = await axios.post("https://fakestoreapi.com/users", userDetails);
+  return res.data;
+};

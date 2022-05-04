@@ -91,7 +91,18 @@ export const useUserStore = create(
         set({
           user: userInfo,
         }),
+      saveUserSignupDetails: (userInfo: any) =>
+        set({
+          user: userInfo,
+        }),
+
+      removeUserDetails: () => {
+        set({
+          user: null,
+        });
+      },
     }),
+
     {
       name: "user-info", // unique name
     }
